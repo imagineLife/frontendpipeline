@@ -1,0 +1,27 @@
+name: All-In-One Pipeline
+
+on: 
+  pull_request:
+    branches: [develop]
+
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      
+      # checkout the repo
+      - uses: actions/checkout@v2
+        
+      # setup node
+      - name: Use NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.*"
+
+      #  install deps
+      - run: npm ci
+      
+      # prettier lint check
+      - run: npm run format:check
+        
+      - run: npm run test -- --coverage
