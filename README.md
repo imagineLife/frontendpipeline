@@ -74,8 +74,10 @@ Github includes a [bunch of functionalities](https://docs.github.com/en/reposito
 There is a all-in-one pipeline. This option has 1 stage & many steps. some of the steps are conditional based on the git workflow event being done (push, merge, etc).
 
 ### One job many steps
+
 The all-in-one pipeline has one job, or stage.  
-The all-in-one pipeline has many steps in that job/stage.  
+The all-in-one pipeline has many steps in that job/stage.
 
 ### Some conditional steps
-Some steps are conditional and consider the github "event_name" values to "decide" whether or not to perform the step.  
+
+Some steps are conditional and consider the github "event_name" values to "decide" whether or not to perform the step.
