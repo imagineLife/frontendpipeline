@@ -29,7 +29,7 @@ jobs:
       - run: npm run test -- --coverage
         env:
           CI: true
-      
+
       # coverage details upload
       - name: Upload Code Coverage Report
         uses: actions/upload-artifact@v1
@@ -44,7 +44,7 @@ jobs:
       - name: Build Frontend Assets
         if: github.event_name == 'push'
         run: npm run build
-      
+
       # build output upload
       - name: Upload Build Dir
         if: github.event_name == 'push'
