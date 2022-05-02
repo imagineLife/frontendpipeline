@@ -24,7 +24,7 @@ jobs:
           key: ${{ runner.os }}-frontend-cache-key-${{ hashFiles('**/package-lock.json') }}
 
           # look for cache from previous instance
-          restore-key: |
+          restore-keys: |
             ${{ runner.os }}-frontend-cache-key-
 
       # setup node
