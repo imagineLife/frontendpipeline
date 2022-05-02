@@ -12,21 +12,20 @@ jobs:
     steps:
       # checkout the repo
       - uses: actions/checkout@v2
-        
+
       # cache node mods
       - name: Cache Node-Mods
         uses: actions/cache@v1
         with:
-            # where npm caches modules
-            path: ~/.npm
-            # when package-lock changes, new cache will be generated
-            # when OS changes too
-            key: ${{ runner.os }}-frontend-cache-key-${{ hashFiles('**/package-lock.json') }}
+          # where npm caches modules
+          path: ~/.npm
+          # when package-lock changes, new cache will be generated
+          # when OS changes too
+          key: ${{ runner.os }}-frontend-cache-key-${{ hashFiles('**/package-lock.json') }}
 
-            # look for cache from previous instance
-            restore-key: |
-              ${{ runner.os }}-frontend-cache-key-
-              
+          # look for cache from previous instance
+          restore-key: |
+            ${{ runner.os }}-frontend-cache-key-
 
       # setup node
       - name: Use NodeJS
