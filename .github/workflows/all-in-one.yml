@@ -23,4 +23,5 @@ jobs:
       # prettier lint check
       - run: npm run format:check
 
+      # run unit tests
       - run: npm run test -- --coverage
