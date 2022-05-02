@@ -1,16 +1,19 @@
 # A Pipeline for a Frontend Repo
 
-- [Pre-Reqs](#pre-reqs)
-  - [React](#react)
-  - [Testing](#testing)
-  - [Building into static assets](#building-into-static-assets)
-  - [Using Surge](#using-surge)
-  - [Using Prettier](#using-prettier)
-  - [Github Repo Deets](#github-repo-deets)
-- [The Github Folder](#the-github-folder)
-  - [codeowners](#codeowners)
-- [Approach Choice](#approach-choice)
-- [Multiple Conditions in one Pipeline File](#multiple-conditions-in-one-pipeline-file)
+- [A Pipeline for a Frontend Repo](#a-pipeline-for-a-frontend-repo)
+  - [Pre-Reqs](#pre-reqs)
+    - [React](#react)
+    - [Testing](#testing)
+    - [Building into static assets](#building-into-static-assets)
+    - [Using Surge](#using-surge)
+    - [Using Prettier](#using-prettier)
+    - [Github Repo Deets](#github-repo-deets)
+  - [The Github Folder](#the-github-folder)
+    - [codeowners](#codeowners)
+  - [Approach Choice](#approach-choice)
+    - [Multiple Conditions in one Pipeline File](#multiple-conditions-in-one-pipeline-file)
+    - [One job many steps](#one-job-many-steps)
+    - [Some conditional steps](#some-conditional-steps)
 
 ## Pre-Reqs
 
@@ -66,6 +69,13 @@ Github includes a [bunch of functionalities](https://docs.github.com/en/reposito
 
 ## Approach Choice
 
-## Multiple Conditions in one Pipeline File
+### Multiple Conditions in one Pipeline File
 
 There is a all-in-one pipeline. This option has 1 stage & many steps. some of the steps are conditional based on the git workflow event being done (push, merge, etc).
+
+### One job many steps
+The all-in-one pipeline has one job, or stage.  
+The all-in-one pipeline has many steps in that job/stage.  
+
+### Some conditional steps
+Some steps are conditional and consider the github "event_name" values to "decide" whether or not to perform the step.  
