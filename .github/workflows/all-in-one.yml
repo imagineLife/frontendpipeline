@@ -1,0 +1,51 @@
+name: All-In-One Pipeline
+
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - uses: actions/checkout@v2
+
+      # setup node
+      - name: Use NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.*"
+
+      #  install deps
+      - run: npm ci
+
+      # prettier lint check
+      - run: npm run format:check
+
+      # run unit tests
+      - run: npm run test -- --coverage
+        env:
+          CI: true
+
+      #
+      # Only on push event
+      #  Build frontend assets
+      #
+      - name: Build Frontend Assets
+        if: github.event_name == 'push'
+        run: npm run build
+
+      #
+      # Only on push event
+      # Install and run surge
+      # Deploy Frontend Repo
+      #
+      - name: Deploy To Staging
+        if: github.event_name == 'push'
+        run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
+        env:
+          SURGE_LOGIN: ${{secrets.SURGE_LOGIN}}
+          SURGE_TOKEN: ${{secrets.SURGE_TOKEN}}

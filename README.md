@@ -1,12 +1,17 @@
 # A Pipeline for a Frontend Repo
 
-  - [Pre-Reqs](#pre-reqs)
-    - [React](#react)
-    - [Testing](#testing)
-    - [Building into static assets](#building-into-static-assets)
+- [Pre-Reqs](#pre-reqs)
+  - [React](#react)
+  - [Testing](#testing)
+  - [Building into static assets](#building-into-static-assets)
   - [Using Surge](#using-surge)
   - [Using Prettier](#using-prettier)
-  - [The Github Folder](#the-github-folder)
+  - [Github Repo Deets](#github-repo-deets)
+- [The Github Folder](#the-github-folder)
+  - [codeowners](#codeowners)
+- [Approach Choice](#approach-choice)
+- [Multiple Conditions in one Pipeline File](#multiple-conditions-in-one-pipeline-file)
+
 ## Pre-Reqs
 
 ### React
@@ -36,13 +41,31 @@ Here, the surge cli should be installed on the host machine (_your laptop/deskto
 3. use the rando-generated surge domain
 
 ### Using Prettier
-Prettier has been setup in the repo, and the `package.json` file has 2 scripts that can be used: 
+
+Prettier has been setup in the repo, and the `package.json` file has 2 scripts that can be used:
+
 - **format:check** runs prettier and logs the files that need formatting
 - **format** will apply the formatting requirements outlined in the `.prettierrc` file
 
+### Github Repo Deets
+
+The repo has a bunch of branch settings
+
+- master/main is protected
+- PR is required to merge
+  - approvals of PR are required
+  - when new commits are pushed to a branch, reviewers need to review new pushed details - previous approvals do not persist
 
 ## The Github Folder
-At the root of the directory is a `.github` directory. Here lies the guts of the CI/CD pipeline.  
+
+At the root of the directory is a `.github` directory. Here lies the guts of the CI/CD pipeline.
 
 ### codeowners
-Github includes a [bunch of functionalities](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) in their `CODEOWNERS` file.  
+
+Github includes a [bunch of functionalities](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) in their `CODEOWNERS` file.
+
+## Approach Choice
+
+## Multiple Conditions in one Pipeline File
+
+There is a all-in-one pipeline. This option has 1 stage & many steps. some of the steps are conditional based on the git workflow event being done (push, merge, etc).
