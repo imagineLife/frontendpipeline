@@ -3,6 +3,8 @@ name: All-In-One Pipeline
 on:
   pull_request:
     branches: [develop]
+  push:
+    branches: [develop]
 
 jobs:
   build:
