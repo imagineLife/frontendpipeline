@@ -40,6 +40,12 @@ Prettier has been setup in the repo, and the `package.json` file has 2 scripts t
 - **format:check** runs prettier and logs the files that need formatting
 - **format** will apply the formatting requirements outlined in the `.prettierrc` file
 
+### Github Repo Deets
+The repo has a bunch of branch settings
+- master/main is protected
+- PR is required to merge
+  - approvals of PR are required
+  - when new commits are pushed to a branch, reviewers need to review new pushed details - previous approvals do not persist
 
 ## The Github Folder
 At the root of the directory is a `.github` directory. Here lies the guts of the CI/CD pipeline.  
