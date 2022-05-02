@@ -44,6 +44,13 @@ jobs:
         env:
           CI: true
 
+      # coverage details upload
+      - name: Upload Code Coverage Report
+        uses: actions/upload-artifact@v1
+        with:
+          name: frontend-code-coverage-upload
+          path: coverage
+
       #
       # Only on push event
       #  Build frontend assets
@@ -51,6 +58,14 @@ jobs:
       - name: Build Frontend Assets
         if: github.event_name == 'push'
         run: npm run build
+
+      # build output upload
+      - name: Upload Build Dir
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-dir-upload
+          path: build
 
       #
       # Only on push event
