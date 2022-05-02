@@ -1,5 +1,12 @@
 # A Pipeline for a Frontend Repo
 
+  - [Pre-Reqs](#pre-reqs)
+    - [React](#react)
+    - [Testing](#testing)
+    - [Building into static assets](#building-into-static-assets)
+  - [Using Surge](#using-surge)
+  - [Using Prettier](#using-prettier)
+  - [The Github Folder](#the-github-folder)
 ## Pre-Reqs
 
 ### React
@@ -19,7 +26,7 @@
 - here use `npm run build` to "build" the static assets to serve in a prod-like environment
   - this will create a directory if not present, called `build` that contains the contents ready for prod
 
-## Using Surge
+### Using Surge
 
 Here, Surge is used as a server to deploy the prod frontend assets to.  
 Here, the surge cli should be installed on the host machine (_your laptop/desktop_). **If the surge cli is not installed on the host, install it**.
@@ -28,7 +35,14 @@ Here, the surge cli should be installed on the host machine (_your laptop/deskto
 2. update the `project` string to include the build directory at the end - add `/build` to the end
 3. use the rando-generated surge domain
 
-## Using Prettier
+### Using Prettier
 Prettier has been setup in the repo, and the `package.json` file has 2 scripts that can be used: 
 - **format:check** runs prettier and logs the files that need formatting
 - **format** will apply the formatting requirements outlined in the `.prettierrc` file
+
+
+## The Github Folder
+At the root of the directory is a `.github` directory. Here lies the guts of the CI/CD pipeline.  
+
+### codeowners
+Github includes a [bunch of functionalities](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) in their `CODEOWNERS` file.  
