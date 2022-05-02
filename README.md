@@ -1,16 +1,16 @@
 # A Pipeline for a Frontend Repo
 
-  - [Pre-Reqs](#pre-reqs)
-    - [React](#react)
-    - [Testing](#testing)
-    - [Building into static assets](#building-into-static-assets)
-    - [Using Surge](#using-surge)
-    - [Using Prettier](#using-prettier)
-    - [Github Repo Deets](#github-repo-deets)
-  - [The Github Folder](#the-github-folder)
-    - [codeowners](#codeowners)
-  - [Approach Choice](#approach-choice)
-  - [Multiple Conditions in one Pipeline File](#multiple-conditions-in-one-pipeline-file)
+- [Pre-Reqs](#pre-reqs)
+  - [React](#react)
+  - [Testing](#testing)
+  - [Building into static assets](#building-into-static-assets)
+  - [Using Surge](#using-surge)
+  - [Using Prettier](#using-prettier)
+  - [Github Repo Deets](#github-repo-deets)
+- [The Github Folder](#the-github-folder)
+  - [codeowners](#codeowners)
+- [Approach Choice](#approach-choice)
+- [Multiple Conditions in one Pipeline File](#multiple-conditions-in-one-pipeline-file)
 
 ## Pre-Reqs
 
@@ -64,7 +64,8 @@ At the root of the directory is a `.github` directory. Here lies the guts of the
 
 Github includes a [bunch of functionalities](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) in their `CODEOWNERS` file.
 
-
 ## Approach Choice
+
 ## Multiple Conditions in one Pipeline File
-There is a all-in-one pipeline. This option has 1 stage & many steps. some of the steps are conditional based on the git workflow event being done (push, merge, etc).  
+
+There is a all-in-one pipeline. This option has 1 stage & many steps. some of the steps are conditional based on the git workflow event being done (push, merge, etc).
