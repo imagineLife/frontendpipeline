@@ -1,0 +1,85 @@
+name: All-In-One Pipeline
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - uses: actions/checkout@v2
+
+      # cache node mods
+      - name: Cache Node-Mods
+        uses: actions/cache@v1
+        with:
+          # where npm caches modules
+          path: ~/.npm
+          # when package-lock changes, new cache will be generated
+          # when OS changes too
+          key: ${{ runner.os }}-frontend-cache-key-${{ hashFiles('**/package-lock.json') }}
+
+          # look for cache from previous instance
+          restore-keys: |
+            ${{ runner.os }}-frontend-cache-key-
+
+      # setup node
+      - name: Use NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.*"
+
+      #  install deps
+      - run: npm ci
+
+      # prettier lint check
+      - run: npm run format:check
+
+      # run unit tests
+      - run: npm run test -- --coverage
+        env:
+          CI: true
+
+      # coverage details upload
+      - name: Upload Code Coverage Report
+        uses: actions/upload-artifact@v1
+        with:
+          name: frontend-code-coverage-upload
+          path: coverage
+
+      #
+      # Only on push event
+      #  Build frontend assets
+      #
+      - name: Build Frontend Assets
+        if: github.event_name == 'push'
+        run: npm run build
+
+      # build output upload
+      - name: Upload Build Dir
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-dir-upload
+          path: build
+
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #
+      # Only on push event
+      # Install and run surge
+      # Deploy Frontend Repo
+      #
+      - name: Deploy To Staging
+        if: github.event_name == 'push'
+        run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
+        env:
+          SURGE_LOGIN: ${{secrets.SURGE_LOGIN}}
+          SURGE_TOKEN: ${{secrets.SURGE_TOKEN}}
