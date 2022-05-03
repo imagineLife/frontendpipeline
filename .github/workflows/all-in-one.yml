@@ -9,6 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # SURGE_LOGIN && SURGE_TOKEN
+      #     those are used in both surge deploy steps
+      #     written here to reduce writing this 2x (1x per step)
+      SURGE_LOGIN: ${{secrets.SURGE_LOGIN}}
+      SURGE_TOKEN: ${{secrets.SURGE_TOKEN}}
     steps:
       # checkout the repo
       - uses: actions/checkout@v2
@@ -87,9 +93,6 @@ jobs:
       - name: Deploy To Staging
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
-        env:
-          SURGE_LOGIN: ${{secrets.SURGE_LOGIN}}
-          SURGE_TOKEN: ${{secrets.SURGE_TOKEN}}
       #
       # Only on push event
       # TO the master branch
@@ -101,6 +104,3 @@ jobs:
       - name: Deploy To Production
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
-        env:
-          SURGE_LOGIN: ${{secrets.SURGE_LOGIN}}
-          SURGE_TOKEN: ${{secrets.SURGE_TOKEN}}
