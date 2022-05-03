@@ -80,11 +80,26 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #
       # Only on push event
+      # TO the dev branch
       # Install and run surge
       # Deploy Frontend Repo
       #
       - name: Deploy To Staging
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
+        env:
+          SURGE_LOGIN: ${{secrets.SURGE_LOGIN}}
+          SURGE_TOKEN: ${{secrets.SURGE_TOKEN}}
+      #
+      # Only on push event
+      # TO the master branch
+      # Install and run surge
+      # Deploy Frontend Repo
+      # NOTE:
+      #  in order for this to be perfect, a new env var + surge domain would be needed - this is an incomplete temporary step
+      #
+      - name: Deploy To Production
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
         env:
           SURGE_LOGIN: ${{secrets.SURGE_LOGIN}}
