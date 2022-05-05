@@ -104,3 +104,7 @@ jobs:
       - name: Deploy To Production
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
+
+      - name: Upload Coverage Report
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: npx codecov
