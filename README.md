@@ -1,5 +1,7 @@
 # A Pipeline for a Frontend Repo
+
 [![Version Badge](https://img.shields.io/github/v/tag/imagineLife/frontend-pipeline)](https://github.com/imagineLife/frontend-pipeline)
+
 - [A Pipeline for a Frontend Repo](#a-pipeline-for-a-frontend-repo)
   - [Pre-Reqs](#pre-reqs)
     - [React](#react)
