@@ -90,4 +90,13 @@ Some steps are conditional and consider the github "event_name" values to "decid
 ## Steps
 - `checkout the repo`: Checks out the repo so that the workflow can access the repo ([Github Action: Docs](https://github.com/actions/checkout#checkout-v3))
 - `Cache node_mod dependencies`: For faster workflow ([Github Action: Docs](https://github.com/actions/cache#cache))
-- `npm ci`: install node_mods
+- `npm ci`: install node_mods - ran by the runner, no github action
+- `lint` the repo with `npm run format:check` - ran through an npm script in the repo's `package.json`
+- `frontend unit tests` - ran through an npm script in the repo's `package.json`
+- `upload frontend code coverage artifacts` to github
+- `Build Frontend assets` - ran by an npm script, storing frontend prod-ready assets into a "build" directory
+- `upload Frontend assets ` to github
+- `zip assets`: the build dir and the coverage dir
+- `Create a Release` using [semantic-release](https://github.com/semantic-release/semantic-release)
+- `Deploy to Staging` when ready
+- `Deploy to Production` when ready
