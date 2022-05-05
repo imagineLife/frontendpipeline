@@ -14,6 +14,8 @@
     - [Multiple Conditions in one Pipeline File](#multiple-conditions-in-one-pipeline-file)
     - [One job many steps](#one-job-many-steps)
     - [Some conditional steps](#some-conditional-steps)
+  - [Stages](#stages)
+  - [Steps](#steps)
 
 ## Pre-Reqs
 
@@ -81,3 +83,11 @@ The all-in-one pipeline has many steps in that job/stage.
 ### Some conditional steps
 
 Some steps are conditional and consider the github "event_name" values to "decide" whether or not to perform the step.
+
+
+## Stages
+- One Stage: `build`
+## Steps
+- `checkout the repo`: Checks out the repo so that the workflow can access the repo ([Github Action: Docs](https://github.com/actions/checkout#checkout-v3))
+- `Cache node_mod dependencies`: For faster workflow ([Github Action: Docs](https://github.com/actions/cache#cache))
+- `npm ci`: install node_mods
