@@ -1,5 +1,5 @@
 module.exports = {
-  branches: "main",
+  branches: "master",
   repositoryUrl: "https://github.com/imagineLife/frontend-pipeline/",
   plugins: [
     "@semantic-release/commit-analyzer",
