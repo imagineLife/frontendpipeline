@@ -83,7 +83,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_KEY }}
       #
       # Only on push event
       # TO the dev branch
