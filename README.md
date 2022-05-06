@@ -1,7 +1,8 @@
 # A Pipeline for a Frontend Repo
 
-[![Version Badge](https://img.shields.io/github/v/tag/imagineLife/frontendpipeline)](https://github.com/imagineLife/frontendpipeline)
-[![Code-Coverage Badge](https://img.shields.io/codecov/c/github/imagineLife/frontend-pipeline)](https://img.shields.io/codecov/c/github/imagineLife/frontend-pipeline)
+[![Version Badge](https://img.shields.io/github/v/tag/imagineLife/frontendpipeline?logo=semantic-release)](https://github.com/imagineLife/frontendpipeline/releases)  
+[![Code-Coverage Badge](https://img.shields.io/codecov/c/gh/imagineLife/frontend-pipeline?logo=codecov)](https://github.com/imagineLife/frontendpipeline/blob/master/src/App.test.js)  
+[![Build Status](https://img.shields.io/github/workflow/status/imagineLife/frontendpipeline/All-In-One%20Pipeline?logo=github)](https://github.com/imagineLife/frontendpipeline/actions/workflows/all-in-one.yml)
 
 - [A Pipeline for a Frontend Repo](#a-pipeline-for-a-frontend-repo)
   - [Pre-Reqs](#pre-reqs)
