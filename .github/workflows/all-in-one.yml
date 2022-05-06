@@ -2,9 +2,9 @@ name: All-In-One Pipeline
 
 on:
   pull_request:
-    branches: [develop, main]
+    branches: [develop, master]
   push:
-    branches: [develop, main]
+    branches: [develop, master]
 
 jobs:
   build:
@@ -74,13 +74,13 @@ jobs:
           path: build
 
       - name: zip assets
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
           zip -r build.zip ./build
           zip -r coverage.zip ./coverage
 
       - name: Create Release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_KEY }}
@@ -102,9 +102,9 @@ jobs:
       #  in order for this to be perfect, a new env var + surge domain would be needed - this is an incomplete temporary step
       #
       - name: Deploy To Production
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
 
       - name: Upload Coverage Report
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: npx codecov
