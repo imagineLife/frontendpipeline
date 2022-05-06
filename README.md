@@ -1,6 +1,7 @@
 # A Pipeline for a Frontend Repo
 
 [![Version Badge](https://img.shields.io/github/v/tag/imagineLife/frontendpipeline)](https://github.com/imagineLife/frontendpipeline)
+[![Code-Coverage Badge](https://img.shields.io/codecov/c/github/imagineLife/frontend-pipeline)](https://img.shields.io/codecov/c/github/imagineLife/frontend-pipeline)
 
 - [A Pipeline for a Frontend Repo](#a-pipeline-for-a-frontend-repo)
   - [Pre-Reqs](#pre-reqs)
@@ -18,6 +19,7 @@
     - [Some conditional steps](#some-conditional-steps)
   - [Stages](#stages)
   - [Steps](#steps)
+    - [Gotchas](#gotchas)
 
 ## Pre-Reqs
 
@@ -104,3 +106,7 @@ Some steps are conditional and consider the github "event_name" values to "decid
 - `Create a Release` using [semantic-release](https://github.com/semantic-release/semantic-release)
 - `Deploy to Staging` when ready
 - `Deploy to Production` when ready
+
+### Gotchas
+
+- don't add a trailing slash `/` to the `repositoryUrl` field of the semantic-release config file `release.config.js` - it will break the ci/cd semantic-release functionality
