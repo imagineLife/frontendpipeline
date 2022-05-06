@@ -1,6 +1,6 @@
 module.exports = {
   branches: "master",
-  repositoryUrl: "https://github.com/imagineLife/frontend-pipeline/",
+  repositoryUrl: "https://github.com/imagineLife/frontendpipeline/",
   plugins: [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
