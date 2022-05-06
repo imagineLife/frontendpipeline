@@ -51,7 +51,7 @@ jobs:
           CI: true
 
       # coverage details upload
-      - name: Upload Code Coverage Report
+      - name: Upload Code Coverage Artifact
         uses: actions/upload-artifact@v1
         with:
           name: frontend-code-coverage-upload
@@ -66,7 +66,7 @@ jobs:
         run: npm run build
 
       # build output upload
-      - name: Upload Build Dir
+      - name: Upload Build Artifact
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v1
         with:
@@ -105,6 +105,6 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
 
-      - name: Upload Coverage Report
+      - name: Upload CodeCov Report
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: npx codecov
