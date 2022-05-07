@@ -1,4 +1,6 @@
-on: push
+on:
+  push:
+    branches: ["19"]
 jobs:
   test-first-action:
     runs-on: ubuntu-latest
