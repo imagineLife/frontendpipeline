@@ -3,6 +3,7 @@ const core = require("@actions/core");
 const gh = require("@actions/github");
 
 try {
+  throw new Error("testing hard-coded error here");
   // prep
   const you = core.getInput("greet-me");
   const t = new Date();
