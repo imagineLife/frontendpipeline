@@ -1,0 +1,13 @@
+name: Hello JS
+author: Jake Laursen
+description: Say Hi to the input
+inputs:
+  greet-me:
+    description: "Who to greet"
+    required: true
+outputs:
+  time:
+    description: "time of greeting"
+runs:
+  using: "node16"
+  main: "dist/index.js"

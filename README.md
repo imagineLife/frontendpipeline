@@ -21,6 +21,12 @@
   - [Stages](#stages)
   - [Steps](#steps)
     - [Gotchas](#gotchas)
+  - [On Actions](#on-actions)
+    - [A first HelloWorld type action](#a-first-helloworld-type-action)
+    - [Compiling the code](#compiling-the-code)
+    - [Logging and actions](#logging-and-actions)
+      - [Masking a log value](#masking-a-log-value)
+      - [Grouping logs into an expandable object](#grouping-logs-into-an-expandable-object)
 
 ## Pre-Reqs
 
@@ -111,3 +117,68 @@ Some steps are conditional and consider the github "event_name" values to "decid
 ### Gotchas
 
 - don't add a trailing slash `/` to the `repositoryUrl` field of the semantic-release config file `release.config.js` - it will break the ci/cd semantic-release functionality
+
+## On Actions
+
+Here, an action gets run by the same github runner that runs the rest of the workflow.  
+Actions are one of two things:
+
+- public
+  - things like "checkout", "cache" and "setupNode" are all examples of actions in the "all-in-one" workflow, where the action is pulled from the github action repo. Github "knows" where to get this code from with the prefix set in the workflow file "actions/\*\*\*"
+- private
+  - we can make our own action, store the code locally & manage its functionality
+
+### A first HelloWorld type action
+
+A first-example of creating an action can be found in `.github/actions/hello-js`.
+
+### Compiling the code
+
+The action uses a few node modules.  
+In order to NOT put the whole node_mods into the runner
+
+- a node_mod `@vercel/ncc` is leveraged to "bundle" all the code
+- the code can get packaged to NOT require the node_mods directory
+
+### Logging and actions
+
+Logs can be used in an action to give "debug" type output in the workflow cli output.  
+In order to _see any logs_ from an action, a github env var must be set: set a secret `ACTIONS_SETP_DEBUG` to `true` and debug info will be printed from ALL actions used in a workflow.
+
+the `@actions/core` module provides a buncha helpful fns to provide logs as an action developer. NOTE: the module :
+
+```js
+const core = require("@actions/core");
+
+// DEBUG MESSAGES
+core.debug("this will be a debug message");
+core.warning("this will print in yellow");
+core.error(
+  "this will print in red: this will not stop the action from running nor will it trigger a failure"
+);
+```
+
+#### Masking a log value
+
+```js
+// mask an input param
+/*
+  This will show the input val as **** instead of the string val
+    when printing the val to the log
+*/
+const inputVal = core.getInput("the-input-param-key-here");
+core.setSecret(inputVal);
+core.debug(`inputVal received: ${inputVal}`);
+```
+
+#### Grouping logs into an expandable object
+
+```js
+core.startGroup("the group name here");
+core.debug({
+  a: "horse",
+  b: "cat",
+  c: "dog"
+});
+core.endGroup();
+```
