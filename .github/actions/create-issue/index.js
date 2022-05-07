@@ -15,8 +15,8 @@ try {
     // includes owner
     // includes repo
     ...gh.context.repo,
-    title,
-    body,
+    title: TITLE,
+    body: BODY,
     assignees: ASSIGNEES ? ASSIGNEES.split("\n") : undefined
   };
 
