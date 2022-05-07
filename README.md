@@ -23,6 +23,7 @@
     - [Gotchas](#gotchas)
   - [On Actions](#on-actions)
     - [A first HelloWorld type action](#a-first-helloworld-type-action)
+      - [Compiling the code](#compiling-the-code)
 
 ## Pre-Reqs
 
@@ -128,4 +129,10 @@ Actions are one of two things:
 
 A first-example of creating an action can be found in `.github/actions/hello-js`.
 
--
+#### Compiling the code
+
+The action uses a few node modules.  
+In order to NOT put the whole node_mods into the runner
+
+- a node_mod `@vercel/ncc` is leveraged to "bundle" all the code
+- the code can get packaged to NOT require the node_mods directory
