@@ -21,6 +21,8 @@
   - [Stages](#stages)
   - [Steps](#steps)
     - [Gotchas](#gotchas)
+  - [On Actions](#on-actions)
+    - [A first HelloWorld type action](#a-first-helloworld-type-action)
 
 ## Pre-Reqs
 
@@ -111,3 +113,19 @@ Some steps are conditional and consider the github "event_name" values to "decid
 ### Gotchas
 
 - don't add a trailing slash `/` to the `repositoryUrl` field of the semantic-release config file `release.config.js` - it will break the ci/cd semantic-release functionality
+
+## On Actions
+
+Here, an action gets run by the same github runner that runs the rest of the workflow.  
+Actions are one of two things:
+
+- public
+  - things like "checkout", "cache" and "setupNode" are all examples of actions in the "all-in-one" workflow, where the action is pulled from the github action repo. Github "knows" where to get this code from with the prefix set in the workflow file "actions/\*\*\*"
+- private
+  - we can make our own action, store the code locally & manage its functionality
+
+### A first HelloWorld type action
+
+A first-example of creating an action can be found in `.github/actions/hello-js`.
+
+-
