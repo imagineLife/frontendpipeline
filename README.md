@@ -23,7 +23,10 @@
     - [Gotchas](#gotchas)
   - [On Actions](#on-actions)
     - [A first HelloWorld type action](#a-first-helloworld-type-action)
-      - [Compiling the code](#compiling-the-code)
+    - [Compiling the code](#compiling-the-code)
+    - [Logging and actions](#logging-and-actions)
+      - [Masking a log value](#masking-a-log-value)
+      - [Grouping logs into an expandable object](#grouping-logs-into-an-expandable-object)
 
 ## Pre-Reqs
 
@@ -129,10 +132,53 @@ Actions are one of two things:
 
 A first-example of creating an action can be found in `.github/actions/hello-js`.
 
-#### Compiling the code
+### Compiling the code
 
 The action uses a few node modules.  
 In order to NOT put the whole node_mods into the runner
 
 - a node_mod `@vercel/ncc` is leveraged to "bundle" all the code
 - the code can get packaged to NOT require the node_mods directory
+
+### Logging and actions
+
+Logs can be used in an action to give "debug" type output in the workflow cli output.  
+In order to _see any logs_ from an action, a github env var must be set: set a secret `ACTIONS_SETP_DEBUG` to `true` and debug info will be printed from ALL actions used in a workflow.
+
+the `@actions/core` module provides a buncha helpful fns to provide logs as an action developer. NOTE: the module :
+
+```js
+const core = require("@actions/core");
+
+// DEBUG MESSAGES
+core.debug("this will be a debug message");
+core.warning("this will print in yellow");
+core.error(
+  "this will print in red: this will not stop the action from running nor will it trigger a failure"
+);
+```
+
+#### Masking a log value
+
+```js
+// mask an input param
+/*
+  This will show the input val as **** instead of the string val
+    when printing the val to the log
+*/
+const inputVal = core.getInput("the-input-param-key-here");
+core.setSecret(inputVal);
+core.debug(`inputVal received: ${inputVal}`);
+```
+
+#### Grouping logs into an expandable object
+
+```js
+core.startGroup("the group name here");
+core.debug({
+  a: "horse",
+  b: "cat",
+  c: "dog"
+});
+core.endGroup();
+```

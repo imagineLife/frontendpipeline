@@ -9968,7 +9968,6 @@
     const gh = __nccwpck_require__(5438);
 
     try {
-      throw new Error("testing hard-coded error here");
       // prep
       const you = core.getInput("greet-me");
       const t = new Date();

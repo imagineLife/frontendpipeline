@@ -15,6 +15,7 @@
   },
   "scripts": {
     "build": "react-scripts build",
+    "build-action": "npx ncc build .github/actions/hello-js/index.js -o .github/actions/hello-js/dist",
     "format:check": "prettier --check \"**/*.{js,jsx,yml,yaml,json,css,scss,md}\" ",
     "format": "prettier --write \"**/*.{js,jsx,yml,yaml,json,css,scss,md}\" ",
     "start": "react-scripts start",
