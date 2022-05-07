@@ -1,6 +1,6 @@
 on:
   push:
-    branches: ["19"]
+    branches: ["19", "22"]
 jobs:
   test-first-action:
     runs-on: ubuntu-latest
@@ -12,3 +12,17 @@ jobs:
           greet-me: "asdf"
       - run: |
           echo "Time: ${{ steps.test-js-step.outputs.time }}"
+  test-create-issue:
+    needs: "test-first-action"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/create-issue
+        id: created-issue
+        with:
+          gh_token: ${{secrets.GITHUB_TOKEN}}
+          title: "Made-up title who dis"
+          body: "made-up body"
+          assignees: "imagineLife"
+      - run: |
+          echo ${{steps.created-issue.outputs.created-issue}}
