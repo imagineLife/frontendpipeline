@@ -9,4 +9,4 @@ jobs:
         with:
           greet-me: "asdf"
       - run: |
-        echo "Time: ${{ steps.test-js-step.outputs.time }}"
+          echo "Time: ${{ steps.test-js-step.outputs.time }}"
