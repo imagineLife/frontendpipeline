@@ -1,8 +1,9 @@
+name: Custom Js Actions
 on:
   push:
     branches: ["19", "22"]
 jobs:
-  test-first-action:
+  custom-hello-js:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -12,7 +13,7 @@ jobs:
           greet-me: "asdf"
       - run: |
           echo "Time: ${{ steps.test-js-step.outputs.time }}"
-  test-create-issue:
+  create-an-issue:
     needs: "test-first-action"
     runs-on: ubuntu-latest
     steps:
