@@ -20,7 +20,7 @@ echo 'line three'
 echo 'line four'
 echo "::endgroup::"
 
-echo '::set-env name=HELLO::hello'
+echo "HELLO=hello" >> $GITHUB_ENV
 
 # leveraging inputs, here the $1 is the "greet-me" input
 echo "Hello from docker + shell script $1"
