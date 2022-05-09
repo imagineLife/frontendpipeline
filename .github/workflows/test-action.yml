@@ -14,7 +14,7 @@ jobs:
       - run: |
           echo "Time: ${{ steps.test-js-step.outputs.time }}"
   create-an-issue:
-    needs: "test-first-action"
+    needs: "custom-hello-js"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,3 +27,14 @@ jobs:
           assignees: "imagineLife"
       - run: |
           echo ${{steps.created-issue.outputs.created-issue}}
+  custom-hello-docker:
+    needs: ["custom-hello-js", "create-an-issue"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/hello-docker
+        id: test-docker-step
+        with:
+          greet-me: "name-in-yaml-file here"
+      - run: |
+          echo "Time: ${{ steps.test-docker-step.outputs.time }}"
