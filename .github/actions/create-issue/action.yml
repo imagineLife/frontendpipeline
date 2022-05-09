@@ -1,0 +1,22 @@
+name: "Create Github Action"
+author: Jake Laursen
+description: "Opens an issue on a Github Repo"
+inputs:
+  gh_token:
+    description: "GH Token"
+    required: true
+  title:
+    description: "The Title of the Issue"
+    required: true
+  body:
+    description: "The Body of the Issue"
+    required: true
+  assignees:
+    description: "Who the issue will be assigned to"
+    required: false
+outputs:
+  issue:
+    description: "the issue object as a JSON string"
+runs:
+  using: "node16"
+  main: "dist/index.js"
