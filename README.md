@@ -27,6 +27,8 @@
     - [Logging and actions](#logging-and-actions)
       - [Masking a log value](#masking-a-log-value)
       - [Grouping logs into an expandable object](#grouping-logs-into-an-expandable-object)
+    - [Docker and Actions](#docker-and-actions)
+    - [Publishing An Action](#publishing-an-action)
 
 ## Pre-Reqs
 
@@ -182,3 +184,11 @@ core.debug({
 });
 core.endGroup();
 ```
+
+### Docker and Actions
+
+Actions can run in docker containers.
+
+### Publishing An Action
+
+Actions can be published to the github action repo & used publicly :)

@@ -1,0 +1,19 @@
+name: Hello Docker
+author: Jake Laursen
+description: Hello world using a docker image in a github workflow custom action
+inputs:
+  greet-me:
+    description: "Who to greet"
+    required: true
+outputs:
+  time:
+    description: "time of greeting"
+runs:
+  using: "docker"
+  # an "image" from a local dockerfile
+  image: "Dockerfile"
+  # CAN have "entrypoint" key/val but in this case the entrypoint
+  #   is declared in the dockerfile directly
+  # "args" below get passed to the shell runner + shell script
+  args:
+    - ${{ inputs.greet-me }}
