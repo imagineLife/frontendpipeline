@@ -38,7 +38,7 @@ jobs:
 
       # prettier lint check
       - run: npm run format:check
-  
+
   unit-test:
     runs-on: ubuntu-latest
     steps:
