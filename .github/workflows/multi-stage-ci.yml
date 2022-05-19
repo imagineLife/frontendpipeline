@@ -50,3 +50,77 @@ jobs:
       - name: Upload CodeCov Report
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: npx codecov
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: ["unit-test", "lint"]
+    steps:
+      #
+      # setup
+      #
+      - uses:
+          actions/checkout@v2
+          # cache node mods
+      - name: Cache Node-Mods
+        uses: actions/cache@v1
+        with:
+          # where npm caches modules
+          path: ~/.npm
+          # when package-lock changes, new cache will be generated
+          # when OS changes too
+          key: ${{ runner.os }}-frontend-cache-key-${{ hashFiles('**/package-lock.json') }}
+
+          # look for cache from previous instance
+          restore-keys: |
+            ${{ runner.os }}-frontend-cache-key-
+      - run: npm ci
+      #
+      # build
+      #
+      - name: Build Frontend Assets
+        if: github.event_name == 'push'
+        run: npm run build
+
+      # build output upload
+      - name: Upload Build Artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-dir-upload
+          path: build
+
+      - name: zip assets
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          zip -r build.zip ./build
+          zip -r coverage.zip ./coverage
+
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_KEY }}
+      #
+      # Only on push event
+      # TO the dev branch
+      # Install and run surge
+      # Deploy Frontend Repo
+      #
+      - name: Deploy To Staging
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
+      #
+      # Only on push event
+      # TO the master branch
+      # Install and run surge
+      # Deploy Frontend Repo
+      # NOTE:
+      #  in order for this to be perfect, a new env var + surge domain would be needed - this is an incomplete temporary step
+      #
+      - name: Deploy To Production
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
+
+      - name: Upload CodeCov Report
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx codecov
