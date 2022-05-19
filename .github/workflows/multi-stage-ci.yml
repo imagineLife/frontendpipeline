@@ -38,7 +38,7 @@ jobs:
 
       # prettier lint check
       - run: npm run format:check
-      
+
       - name: Create-Issue-On-Failure
         # if: failure() && github.event_name == 'pull_request'
         if: failure()
@@ -48,8 +48,8 @@ jobs:
           --header 'authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
           --header 'content-type: application/json' \
           --data '{ 
-            "title": "Multi-Stage All-In-One Pipeline lint job Failure: commit ${{github.sha}}", 
-            "body": "The 'Lint' job in workflow **${{github.workflow}}** bombed out. \n Fix this!",
+            "title": "Multi-Stage All-In-One Pipeline lint job Failure", 
+            "body": "The 'Lint' job in workflow **${{github.workflow}}** bombed out. \n Fix this! - commit ${{github.sha}}",
             "assignees": ["${{github.event.pull_request.user.login}}"]
             }'
 
@@ -73,8 +73,8 @@ jobs:
           --header 'authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
           --header 'content-type: application/json' \
           --data '{ 
-            "title": "Multi-Stage All-In-One Pipeline unit-test job Failure: commit ${{github.sha}}", 
-            "body": "The 'Unit-Test' job in workflow **${{github.workflow}}** bombed out",
+            "title": "Multi-Stage All-In-One Pipeline unit-test job Failure", 
+            "body": "The 'Unit-Test' job in workflow **${{github.workflow}}** bombed out - commit ${{github.sha}}",
             "assignees": ["${{github.event.pull_request.user.login}}"]
             }'
 
@@ -150,7 +150,7 @@ jobs:
 
       - name: Upload CodeCov Report
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run:  npx codecov
+        run: npx codecov
 
       - name: Create-Issue-On-Failure
         # if: failure() && github.event_name == 'pull_request'
@@ -161,7 +161,7 @@ jobs:
           --header 'authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
           --header 'content-type: application/json' \
           --data '{ 
-            "title": "Multi-Stage All-In-One Pipeline Build-And-Deploy job Failure: commit ${{github.sha}}", 
-            "body": "The 'Build-And-Deploy' job in workflow **${{github.workflow}}** bombed out",
+            "title": "Multi-Stage All-In-One Pipeline Build-And-Deploy job Failure", 
+            "body": "The 'Build-And-Deploy' job in workflow **${{github.workflow}}** bombed out - commit ${{github.sha}}",
             "assignees": ["${{github.event.pull_request.user.login}}"]
             }'
