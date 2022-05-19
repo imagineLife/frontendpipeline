@@ -2,9 +2,9 @@ name: Multi-Stage All-In-One Pipeline
 
 on:
   pull_request:
-    branches: [develop, master]
+    branches: [37-multi-stage-pipeline]
   push:
-    branches: [develop, master]
+    branches: [37-multi-stage-pipeline]
 
 jobs:
   lint:
