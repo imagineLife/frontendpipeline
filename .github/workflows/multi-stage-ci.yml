@@ -1,0 +1,167 @@
+name: Multi-Stage All-In-One Pipeline
+
+on:
+  pull_request:
+    branches: [37-multi-stage-pipeline]
+  push:
+    branches: [37-multi-stage-pipeline]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - uses: actions/checkout@v2
+
+      # cache node mods
+      - name: Cache Node-Mods
+        uses: actions/cache@v1
+        with:
+          # where npm caches modules
+          path: ~/.npm
+          # when package-lock changes, new cache will be generated
+          # when OS changes too
+          key: ${{ runner.os }}-frontend-cache-key-${{ hashFiles('**/package-lock.json') }}
+
+          # look for cache from previous instance
+          restore-keys: |
+            ${{ runner.os }}-frontend-cache-key-
+
+      # setup node
+      - name: Use NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.*"
+
+      #  install deps
+      - run: npm ci
+
+      # prettier lint check
+      - run: npm run format:check
+
+      - name: Create-Issue-On-Failure
+        # if: failure() && github.event_name == 'pull_request'
+        if: failure()
+        run: |
+          curl --request POST \
+          --url https://api.github.com/repos/${{github.repository}}/issues \
+          --header 'authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
+          --header 'content-type: application/json' \
+          --data '{ 
+            "title": "Multi-Stage All-In-One Pipeline lint job Failure", 
+            "body": "The 'Lint' job in workflow **${{github.workflow}}** bombed out. \n Fix this! - commit ${{github.sha}}",
+            "assignees": ["${{github.event.pull_request.user.login}}"]
+            }'
+
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run test -- --coverage
+        env:
+          CI: true
+      - name: Upload CodeCov Report
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx codecov
+      - name: Create-Issue-On-Failure
+        # if: failure() && github.event_name == 'pull_request'
+        if: failure()
+        run: |
+          curl --request POST \
+          --url https://api.github.com/repos/${{github.repository}}/issues \
+          --header 'authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
+          --header 'content-type: application/json' \
+          --data '{ 
+            "title": "Multi-Stage All-In-One Pipeline unit-test job Failure", 
+            "body": "The 'Unit-Test' job in workflow **${{github.workflow}}** bombed out - commit ${{github.sha}}",
+            "assignees": ["${{github.event.pull_request.user.login}}"]
+            }'
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: ["unit-test", "lint"]
+    steps:
+      #
+      # setup
+      #
+      - uses:
+          actions/checkout@v2
+          # cache node mods
+      - name: Cache Node-Mods
+        uses: actions/cache@v1
+        with:
+          # where npm caches modules
+          path: ~/.npm
+          # when package-lock changes, new cache will be generated
+          # when OS changes too
+          key: ${{ runner.os }}-frontend-cache-key-${{ hashFiles('**/package-lock.json') }}
+
+          # look for cache from previous instance
+          restore-keys: |
+            ${{ runner.os }}-frontend-cache-key-
+      - run: npm ci
+      #
+      # build
+      #
+      - name: Build Frontend Assets
+        if: github.event_name == 'push'
+        run: npm run build
+
+      # build output upload
+      - name: Upload Build Artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-dir-upload
+          path: build
+
+      - name: zip assets
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          zip -r build.zip ./build
+          zip -r coverage.zip ./coverage
+
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_KEY }}
+      #
+      # Only on push event
+      # TO the dev branch
+      # Install and run surge
+      # Deploy Frontend Repo
+      #
+      - name: Deploy To Staging
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
+      #
+      # Only on push event
+      # TO the master branch
+      # Install and run surge
+      # Deploy Frontend Repo
+      # NOTE:
+      #  in order for this to be perfect, a new env var + surge domain would be needed - this is an incomplete temporary step
+      #
+      - name: Deploy To Production
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx surge --project ./build --domain ${{secrets.SURGE_DOMAIN}}
+
+      - name: Upload CodeCov Report
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx codecov
+
+      - name: Create-Issue-On-Failure
+        # if: failure() && github.event_name == 'pull_request'
+        if: failure()
+        run: |
+          curl --request POST \
+          --url https://api.github.com/repos/${{github.repository}}/issues \
+          --header 'authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
+          --header 'content-type: application/json' \
+          --data '{ 
+            "title": "Multi-Stage All-In-One Pipeline Build-And-Deploy job Failure", 
+            "body": "The 'Build-And-Deploy' job in workflow **${{github.workflow}}** bombed out - commit ${{github.sha}}",
+            "assignees": ["${{github.event.pull_request.user.login}}"]
+            }'
